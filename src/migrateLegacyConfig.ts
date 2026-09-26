@@ -1,6 +1,6 @@
-import debugCore from 'debug';
-
 import type {Logger} from '@verdaccio/types';
+
+import debugCore from 'debug';
 
 const debug = debugCore('verdaccio:plugin:ldap:migrate');
 

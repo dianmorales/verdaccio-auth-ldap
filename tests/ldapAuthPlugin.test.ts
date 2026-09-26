@@ -1,7 +1,8 @@
-import {describe, test, expect, vi, beforeEach} from 'vitest';
 import type {Config, Logger, RemoteUser, PackageAccess} from '@verdaccio/types';
 
 import LdapAuthPlugin from '../src/ldapAuthPlugin';
+
+import {describe, test, expect, vi, beforeEach} from 'vitest';
 
 const logger: Logger = {
   error: vi.fn(),

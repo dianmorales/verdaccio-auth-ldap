@@ -21,7 +21,7 @@ describe('LDAP API login', () => {
     }).then((res) => {
       expect(res.status).to.eq(201);
       expect(res.body).to.have.property('token');
-      expect(res.body.token).to.be.a('string').and.not.be.empty;
+      expect(res.body.token).to.be.a('string').and.have.length.greaterThan(0);
     });
   });
 

@@ -1,8 +1,8 @@
+import type {LdapConfig} from '../types';
+
+import debugCore from 'debug';
 import {Client} from 'ldapts';
 import type {Entry} from 'ldapts';
-import debugCore from 'debug';
-
-import type {LdapConfig} from '../types';
 
 const debug = debugCore('verdaccio:plugin:ldap:client');
 
