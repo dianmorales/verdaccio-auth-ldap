@@ -1,6 +1,7 @@
-import {describe, test, expect, vi} from 'vitest';
 import {createLdapClient} from '../src/ldapClient';
 import type {LdapConfig} from '../types';
+
+import {describe, test, expect, vi} from 'vitest';
 
 vi.mock('ldapts', () => {
   return {

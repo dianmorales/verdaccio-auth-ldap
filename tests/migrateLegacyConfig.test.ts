@@ -1,7 +1,8 @@
-import {describe, test, expect, vi, beforeEach, afterEach} from 'vitest';
 import type {Logger} from '@verdaccio/types';
 
 import migrateLegacyConfig from '../src/migrateLegacyConfig';
+
+import {describe, test, expect, vi, beforeEach, afterEach} from 'vitest';
 
 const logger: Logger = {
   error: vi.fn(),

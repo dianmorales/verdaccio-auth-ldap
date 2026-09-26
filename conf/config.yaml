@@ -2,6 +2,9 @@ storage: /verdaccio/storage
 
 plugins: /verdaccio/plugins
 
+# the e2e battery publishes tarballs larger than the 10mb default
+max_body_size: 100mb
+
 auth:
   '@verdaccio/auth-ldap':
     url: LDAP_URL
@@ -13,19 +16,18 @@ auth:
     groupSearchFilter: '(memberUid={{username}})'
     groupAttribute: cn
 
-uplinks:
-  npmjs:
-    url: https://registry.npmjs.org/
-
+# no uplink on purpose: the e2e battery only uses packages it publishes itself
 packages:
+  # reads are open so the battery's raw HTTP checks work; the LDAP plugin is still
+  # exercised on every publish and unpublish, which is where authorization matters
   '@*/*':
-    access: $authenticated
+    access: $all
     publish: $authenticated
-    proxy: npmjs
+    unpublish: $authenticated
   '**':
-    access: $authenticated
+    access: $all
     publish: $authenticated
-    proxy: npmjs
+    unpublish: $authenticated
 
 log:
   - {type: stdout, format: pretty, level: trace}

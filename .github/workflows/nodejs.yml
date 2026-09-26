@@ -93,15 +93,10 @@ jobs:
       - name: Verify plugin loaded
         run: docker compose logs verdaccio 2>&1 | grep -q "ldap"
 
-      - name: E2E - login, publish and fetch a package
+      - name: E2E - login check
         run: |
           pnpm verdaccioctl login -u testuser -p testpassword -r http://localhost:4873
           pnpm verdaccioctl whoami -r http://localhost:4873
-
-          TMPDIR=$(mktemp -d)
-          echo '{"name":"ci-test-pkg","version":"1.0.0"}' > "$TMPDIR/package.json"
-          cd "$TMPDIR"
-          npm publish --registry http://localhost:4873
 
       - name: E2E UI - Cypress
         run: pnpm e2e:ui:run
@@ -117,6 +112,23 @@ jobs:
             cypress/videos
             cypress/screenshots
           retention-days: 7
+
+      # after Cypress on purpose: the UI detail suite opens the first package in the
+      # list, and the battery leaves dozens of them behind.
+      # LDAP has no user registration, so the battery gets a token instead of creating
+      # its own account.
+      - name: E2E - registry battery
+        run: |
+          TOKEN=$(curl -sf -X PUT -H 'Content-Type: application/json' \
+            -d '{"name":"testuser","password":"testpassword"}' \
+            http://localhost:4873/-/user/org.couchdb.user:testuser \
+            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).token))")
+          test -n "$TOKEN"
+          pnpm e2e:registry --token "$TOKEN" --pm npm --pm pnpm
+
+      - name: Verdaccio logs on failure
+        if: failure()
+        run: docker compose logs verdaccio
 
       - name: Stop services
         if: always()
@@ -183,11 +195,6 @@ jobs:
           pnpm verdaccioctl login -u cfiehe -p testpassword -r http://localhost:4873
           pnpm verdaccioctl whoami -r http://localhost:4873
 
-          TMPDIR=$(mktemp -d)
-          echo '{"name":"ci-ad-test-pkg","version":"1.0.0"}' > "$TMPDIR/package.json"
-          cd "$TMPDIR"
-          npm publish --registry http://localhost:4873
-
       - name: Verify groups resolved via AD memberOf
         run: |
           docker compose -f docker-compose.ad.yaml logs verdaccio 2>&1 | grep -i "GroupA\|GroupB"
@@ -209,6 +216,23 @@ jobs:
             cypress/videos
             cypress/screenshots
           retention-days: 7
+
+      # after Cypress on purpose: the UI detail suite opens the first package in the
+      # list, and the battery leaves dozens of them behind.
+      # LDAP has no user registration, so the battery gets a token instead of creating
+      # its own account.
+      - name: E2E - registry battery (AD)
+        run: |
+          TOKEN=$(curl -sf -X PUT -H 'Content-Type: application/json' \
+            -d '{"name":"cfiehe","password":"testpassword"}' \
+            http://localhost:4873/-/user/org.couchdb.user:cfiehe \
+            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).token))")
+          test -n "$TOKEN"
+          pnpm e2e:registry --token "$TOKEN" --pm npm --pm pnpm
+
+      - name: Verdaccio logs on failure (AD)
+        if: failure()
+        run: docker compose -f docker-compose.ad.yaml logs verdaccio
 
       - name: Stop AD services
         if: always()

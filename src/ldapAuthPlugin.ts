@@ -1,5 +1,3 @@
-import debugCore from 'debug';
-
 import {constants, errorUtils} from '@verdaccio/core';
 import type {Callback, Config, Logger, PackageAccess, RemoteUser} from '@verdaccio/types';
 
@@ -7,6 +5,8 @@ import type {LdapConfig} from '../types';
 import {createLdapClient, bindClient, searchLdap, unbindClient} from './ldapClient';
 import migrateLegacyConfig from './migrateLegacyConfig';
 import setConfigValue from './setConfigValue';
+
+import debugCore from 'debug';
 
 const debug = debugCore('verdaccio:plugin:ldap');
 

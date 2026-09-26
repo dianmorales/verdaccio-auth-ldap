@@ -1,10 +1,10 @@
-import {join} from 'node:path';
-import {mkdtemp, writeFile, rm} from 'node:fs/promises';
-import {tmpdir} from 'node:os';
-import {spawn} from 'node:child_process';
+import {setupVerdaccioTasks} from '@verdaccio/e2e-ui';
 
 import {defineConfig} from 'cypress';
-import {setupVerdaccioTasks} from '@verdaccio/e2e-ui';
+import {spawn} from 'node:child_process';
+import {mkdtemp, writeFile, rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 
 const registryUrl = process.env.VERDACCIO_URL || 'http://localhost:4873';
 const ldapUser = process.env.LDAP_USER || 'testuser';
