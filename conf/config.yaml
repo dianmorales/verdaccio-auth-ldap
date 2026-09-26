@@ -18,12 +18,16 @@ auth:
 
 # no uplink on purpose: the e2e battery only uses packages it publishes itself
 packages:
+  # reads are open so the battery's raw HTTP checks work; the LDAP plugin is still
+  # exercised on every publish and unpublish, which is where authorization matters
   '@*/*':
-    access: $authenticated
+    access: $all
     publish: $authenticated
+    unpublish: $authenticated
   '**':
-    access: $authenticated
+    access: $all
     publish: $authenticated
+    unpublish: $authenticated
 
 log:
   - {type: stdout, format: pretty, level: trace}
