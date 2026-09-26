@@ -37,7 +37,7 @@
   },
   "packageManager": "pnpm@11.5.2+sha512.71c631e382066efc25625d5cf029075de07b61b37f6e27350fbd84b1bda5864c8c1967adc280776b45c30a715c0359a3be08fef42d5bb09e2b99029979692916",
   "dependencies": {
-    "@verdaccio/core": "9.0.0-next-9.5",
+    "@verdaccio/core": "9.0.0-next-9.32",
     "debug": "4.4.3",
     "ldapts": "7.2.1"
   },
@@ -47,12 +47,13 @@
     "@types/debug": "4.1.12",
     "@types/jsonwebtoken": "9.0.10",
     "@types/node": "25.5.0",
-    "@verdaccio/e2e-ui": "^2.3.0",
-    "@verdaccio/plugin-verifier": "1.0.0-next-9.1",
+    "@verdaccio/e2e-cli": "3.2.1",
+    "@verdaccio/e2e-ui": "2.7.0",
+    "@verdaccio/plugin-verifier": "1.0.0-next-9.28",
     "@verdaccio/registry-cli": "^1.1.0",
-    "@verdaccio/types": "13.0.0-next-8.10",
+    "@verdaccio/types": "14.0.0-next-9.15",
     "cross-env": "^7.0.3",
-    "cypress": "^15.13.1",
+    "cypress": "15.13.1",
     "oxfmt": "0.68.0",
     "oxlint": "1.83.0",
     "rimraf": "^5.0.0",
@@ -78,7 +79,8 @@
     "dev": "./scripts/dev.sh",
     "dev:ad": "./scripts/dev-ad.sh",
     "e2e:ui": "cypress open",
-    "e2e:ui:run": "cypress run"
+    "e2e:ui:run": "cypress run",
+    "e2e:registry": "verdaccio-e2e --registry http://localhost:4873"
   },
   "funding": {
     "type": "opencollective",
